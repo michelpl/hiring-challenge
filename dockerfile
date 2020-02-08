@@ -42,8 +42,4 @@ RUN chown -R www-data:root /var/www/html/
 RUN php composer.phar update -vvv
 
 COPY .env /var/www/html
-#COPY migrate.sh /var/www/html
 RUN php artisan key:generate
-#RUN ./migrate.sh
-RUN cd /var/www/html/ && php artisan migrate:fresh
-RUN cd /var/www/html && php artisan passport:install
