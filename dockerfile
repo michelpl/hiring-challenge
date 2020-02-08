@@ -26,7 +26,6 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-
 ##COMPOSER
 RUN cd /var/www/html/ && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'c5b9b6d368201a9db6f74e2611495f369991b72d9c8cbd3ffbc63edff210eb73d46ffbfce88669ad33695ef77dc76976') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
@@ -46,4 +45,5 @@ COPY .env /var/www/html
 #COPY migrate.sh /var/www/html
 RUN php artisan key:generate
 #RUN ./migrate.sh
-#RUN cd /var/www/html/ && php artisan migrate:fresh && php artisan passport:install
+RUN cd /var/www/html/ && php artisan migrate:fresh
+RUN cd /var/www/html && php artisan passport:install
