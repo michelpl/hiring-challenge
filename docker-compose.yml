@@ -19,7 +19,7 @@ services:
     container_name: web
     depends_on:
       - db
-    build: ./
+    build: ./api
     ports:
       - "8000:80"
     networks:
@@ -28,7 +28,7 @@ services:
     container_name: webapp
     depends_on:
       - db
-    build: ./
+    build: ./webapp
     ports:
       - "8080:8080"
     networks:
