@@ -16,6 +16,12 @@ Clone this repository
 https://github.com/michelpl/message-management-docker.git
 ```
 
+Enter in repository folder
+
+```bash
+cd message-management-docker
+```
+
 Build using docker-compose
 ```bash
 docker-compose build .
