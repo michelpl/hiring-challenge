@@ -57,7 +57,7 @@ http://localhost:8080/
 http://localhost:8000/api/V1
 ```
 
-## The Message Management API will be  avaliable on
+## Api doc
 [API doc](https://documenter.getpostman.com/view/1954140/SWTK2suW)
 
 ## Webapp repository
