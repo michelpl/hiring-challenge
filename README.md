@@ -55,3 +55,4 @@ http://localhost:8080/
 - Split code in smallest components
 - Improve or use another pagination component
 - Add a burger menu for mobile
+- Add unit tests
