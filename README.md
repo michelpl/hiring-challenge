@@ -44,7 +44,6 @@ http://localhost:8080/
 ## The Message Management API will be  avaliable on
 [API doc](https://documenter.getpostman.com/view/1954140/SWTK2suW)
 
-
 ## Webapp repository
 [Github Repository](https://github.com/michelpl/message-management-web)
 
