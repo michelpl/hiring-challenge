@@ -15,11 +15,12 @@ RUN docker-php-ext-install zip
 
 ## GIT
 RUN apt-get install git -y
+
+## Others
 RUN apt-get install vim -y
 RUN a2enmod rewrite
 
 RUN cd /var/www/html && git clone https://github.com/michelpl/message-management-api.git .
-RUN cd /var/www/html && git checkout develop && git config core.fileMode false
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
