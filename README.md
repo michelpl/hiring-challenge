@@ -53,6 +53,11 @@ http://localhost:8080/
 ```
 
 ## The Message Management API will be  avaliable on
+```bash
+http://localhost:8000/api/V1
+```
+
+## The Message Management API will be  avaliable on
 [API doc](https://documenter.getpostman.com/view/1954140/SWTK2suW)
 
 ## Webapp repository
