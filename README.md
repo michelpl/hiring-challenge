@@ -54,4 +54,4 @@ http://localhost:8080/
 
 - Split code in smallest components
 - Improve or use another pagination component
-- Add a burguer menu for mobile
+- Add a burger menu for mobile
