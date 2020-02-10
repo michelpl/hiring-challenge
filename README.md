@@ -1,5 +1,7 @@
 # Message Management Docker
 
+![Using](https://i.imgur.com/ATippjY.gif)
+
 ## Dependencies
 *   ``Docker`` 19.03.5+
 *   ``Docker Compose`` 1.23.1+
