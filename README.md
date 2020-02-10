@@ -49,3 +49,9 @@ http://localhost:8080/
 
 ## Api repository
 [Github Repository](https://github.com/michelpl/message-management-api)
+
+## Next steps
+
+- Split code in smallest components
+- Improve or use another pagination component
+- Add a burguer menu for mobile
