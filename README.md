@@ -3,9 +3,14 @@
 ![Using](https://i.imgur.com/ATippjY.gif)
 
 ## Dependencies
+
 *   ``Docker`` 19.03.5+
 *   ``Docker Compose`` 1.23.1+
-*   ``Port 8000`` For Web API
+
+## Make sure the following ports are avaliable in your server
+
+*   ``Port 8080`` For Web App
+*   ``Port 8000`` For Backend API
 *   ``Port 3306`` For database
 
 ## Building the environment
