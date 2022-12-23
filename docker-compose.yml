@@ -27,11 +27,7 @@ services:
     networks:
       - app-network
     volumes:
-      - type: bind
-        source: ./src
-        target: /webapi
-        volume:
-          nocopy: false
+      - ./source:/var/www/html:rw
   webapp:
     container_name: webapp
     depends_on:
@@ -48,5 +44,5 @@ networks:
     driver: bridge
 
 volumes:
-  mydata:
+  source:
   dbdata:
