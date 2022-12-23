@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,6 +16,12 @@ return new class extends Migration
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('government_id');
+            $table->string('email');
+            $table->bigInteger('debt_amount');
+            $table->date('debt_due_date');
+            $table->bigInteger('debt_id');
             $table->timestamps();
         });
     }

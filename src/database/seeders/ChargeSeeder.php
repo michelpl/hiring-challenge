@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Charge;
 use Illuminate\Database\Seeder;
 
 class ChargeSeeder extends Seeder
@@ -14,6 +14,8 @@ class ChargeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Charge::factory()
+        ->count(50)
+        ->create();
     }
 }

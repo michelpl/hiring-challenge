@@ -15,7 +15,7 @@ class ChargeController extends Controller
      */
     public function index()
     {
-        //
+        return "LIST HERE";
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChargeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => 'V1'], function () {
+
+    //API ROOT
+    Route::get('/', function(){
+        return "KNST HIRING CHALLENGE";
+    });
+
+    Route::controller(ChargeController::class)->group(function () {
+        Route::get('/charges', 'index');
+        Route::get('/charges/{id}', 'show');
+        Route::post('/charges', 'store');
+    });
 });
