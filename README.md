@@ -27,11 +27,6 @@ Enter in repository folder
 cd message-management-docker
 ```
 
-Build using docker-compose
-```bash
-docker-compose build .
-```
-
 Running services
 ```bash
 docker-compose up -d
@@ -55,6 +50,12 @@ http://localhost:8080/
 ## The Message Management API will be  avaliable on
 ```bash
 http://localhost:8000/api/V1
+```
+
+## Development environment
+
+```bash
+$ chown -R $USER:www-data source
 ```
 
 ## Api doc
