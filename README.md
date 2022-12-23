@@ -1,6 +1,6 @@
-# Message Management Docker
+# Hiring Challenge
 
-![Using](https://i.imgur.com/ATippjY.gif)
+![Using](https://#.gif)
 
 ## Dependencies
 
@@ -9,7 +9,6 @@
 
 ## Make sure the following ports are avaliable in your server
 
-*   ``Port 8080`` For Web App
 *   ``Port 8000`` For Backend API
 *   ``Port 3306`` For database
 
@@ -18,13 +17,13 @@
 Clone this repository
 
 ```bash
-https://github.com/michelpl/message-management-docker.git
+https://github.com/michelpl/hiring-challenge-docker.git
 ```
 
 Enter in repository folder
 
 ```bash
-cd message-management-docker
+cd hiring-challenge
 ```
 
 Running services
@@ -42,12 +41,7 @@ Creating Passport credentials
 docker-compose exec web php artisan passport:install
 ```
 
-## The Message Management Web App will be  avaliable on
-```bash
-http://localhost:8080/
-```
-
-## The Message Management API will be  avaliable on
+## The Hiring Challenge API will be avaliable on
 ```bash
 http://localhost:8000/api/V1
 ```
@@ -59,17 +53,6 @@ $ chown -R $USER:www-data source
 ```
 
 ## Api doc
-[API doc](https://documenter.getpostman.com/view/1954140/SWTK2suW)
-
-## Webapp repository
-[Github Repository](https://github.com/michelpl/message-management-web)
-
-## Api repository
-[Github Repository](https://github.com/michelpl/message-management-api)
+[API doc](https://#)
 
 ## Next steps
-
-- Split code in smallest components
-- Improve or use another pagination component
-- Add a burger menu for mobile
-- Add unit tests

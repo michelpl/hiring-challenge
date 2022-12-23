@@ -28,16 +28,7 @@ services:
       - app-network
     volumes:
       - ./src:/var/www/html:rw
-  webapp:
-    container_name: webapp
-    depends_on:
-      - db
-    build: ./webapp
-    ports:
-      - "8080:8080"
-    networks:
-      - app-network
-
+      
 #Docker Networks
 networks:
   app-network:

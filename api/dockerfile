@@ -13,17 +13,12 @@ RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev liblda
 ## Dependencies
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install mysqli
-##RUN docker-php-ext-install xml
-##RUN docker-php-ext-install zip
 
 ## GIT
 RUN apt-get install git -y
 
 ## Others
-RUN apt-get install vim -y
 RUN a2enmod rewrite
-
-#RUN cd /var/www/html && git clone https://github.com/michelpl/message-management-api.git .
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
@@ -36,19 +31,3 @@ RUN cd /tmp && php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33
 RUN cd /tmp && php composer-setup.php
 RUN cd /tmp && php -r "unlink('composer-setup.php');"
 RUN mv /tmp/composer.phar /usr/local/bin/composer
-
-##RUN cp /var/www/html/.env.example /var/www/html/.env
-
-#RUN php composer.phar update -vvv
-
-##COPY .env /var/www/html
-#RUN php artisan key:generate
-
-## Laravel
-#RUN php composer.phar create-project laravel/laravel /var/cache/hiring_challenge
-#RUN cp -r /var/cache/hiring_challenge /var/www/html/
-
-## File create and permissions
-#RUN find /var/www/html/ -type d -exec chmod 775 {} \;
-#RUN find /var/www/html/ -type f -exec chmod 664 {} \;
-#RUN mkdir /var/www/html/public
