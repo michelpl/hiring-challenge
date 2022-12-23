@@ -1,22 +1,22 @@
-FROM node:lts-alpine
+FROM node:latest
 
-RUN npm install -g http-server
-WORKDIR /app
+#RUN npm install -g http-server
+#WORKDIR /app
 
 ## GIT
-RUN apk add git
+#RUN apk add git
 
 ## Others
-RUN apk add vim
+#RUN apk add vim
 
 ##Copy project to workdir
-RUN git clone https://github.com/michelpl/message-management-web.git .
+#RUN git clone https://github.com/michelpl/message-management-web.git .
 
 # instala dependências do projeto
-RUN npm install
+#RUN npm install
 
 # compila a aplicação de produção com minificação
-RUN npm run build
+#RUN npm run build
 
-EXPOSE 8080
-CMD [ "http-server", "dist" ]
+#EXPOSE 8080
+#CMD [ "http-server", "dist" ]
