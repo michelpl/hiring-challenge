@@ -16,12 +16,15 @@ return new class extends Migration
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('debt_id');
+            $table->unique('debt_id');
             $table->string('name');
             $table->string('government_id');
             $table->string('email');
             $table->bigInteger('debt_amount');
+            $table->bigInteger('paid_amount')->default(0);
             $table->date('debt_due_date');
-            $table->bigInteger('debt_id');
+            $table->dateTime('paid_at')->nullable(true);
             $table->timestamps();
         });
     }

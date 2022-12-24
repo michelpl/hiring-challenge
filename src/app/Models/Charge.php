@@ -15,6 +15,9 @@ class Charge extends Model
         'email',
         'debtAmount',
         'debtDueDate',
-        'debtId'
+        'debtId',
+        'paidAt',
+        'paidAmount',
+        'paidBy'
     ];
 }

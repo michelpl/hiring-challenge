@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChargeRequest;
 use App\Http\Requests\UpdateChargeRequest;
 use App\Models\Charge;
+use App\Services\ChargeService;
+use Illuminate\Http\Response;
 
 class ChargeController extends Controller
 {
+    private ChargeService $chargeService;
+    function __construct(ChargeService $chargeService)
+    {
+        $this->chargeService = $chargeService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,8 @@ class ChargeController extends Controller
      */
     public function index()
     {
-        return "LIST HERE";
+        (int) $rowsPerPage = 10;
+        return $this->chargeService->paginatedList($rowsPerPage);
     }
 
     /**
