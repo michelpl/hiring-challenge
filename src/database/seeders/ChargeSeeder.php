@@ -15,7 +15,7 @@ class ChargeSeeder extends Seeder
     public function run()
     {
         Charge::factory()
-        ->count(50)
-        ->create();
+            ->count(50)
+            ->create();
     }
 }

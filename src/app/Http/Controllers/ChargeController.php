@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreChargeRequest;
 use App\Http\Requests\UpdateChargeRequest;
 use App\Models\Charge;
 use App\Services\ChargeService;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use PhpParser\Node\Stmt\TryCatch;
+use App\Factories\ChargeFactory;
 
 class ChargeController extends Controller
 {
     private ChargeService $chargeService;
+    private Charge $charge;
+    private ChargeFactory $chargeFactory;
+
     private array $validationRules = [
             'name' => 'required|max:255|string',
             'governmentId' => 'required|min:11|max:13|string',
@@ -23,8 +25,12 @@ class ChargeController extends Controller
             'debtId' => 'required|integer|min:1|max:99999999'
     ];
 
-    function __construct(ChargeService $chargeService)
+    function __construct(
+        ChargeFactory $chargeFactory, 
+        ChargeService $chargeService
+    )
     {
+        $this->chargeFactory = $chargeFactory;
         $this->chargeService = $chargeService;
     }
 
@@ -60,14 +66,14 @@ class ChargeController extends Controller
         try {
             $request->validate($this->validationRules);
 
+            $charge = $this->chargeFactory->createFromRequestData($request);
+            $charge->saveOrFail();
 
-            //return response($this->message, 201);
+            return response($charge, 201);
 
         } catch (\Exception $exception) {
-            return $this->returnResponseError($exception);
+            return $this->handleResponseException($exception);
         }
-
-        return $request;
     }
 
     /**
@@ -115,7 +121,7 @@ class ChargeController extends Controller
         //
     }
 
-    private function returnResponseError(\Exception $exception): Response
+    private function handleResponseException(\Exception $exception): Response
     {
         $message = $exception->getMessage();
         $code = $exception->getCode();
@@ -123,14 +129,14 @@ class ChargeController extends Controller
         if (isset($exception->validator)) {
             $validator = $exception->validator;
             $message = [
-                'message' => $exception->getMessage(),
+                'Invalid request data',
                 $validator->messages()
             ];
 
-            $code = 400;
+            $code = 422;
         }
 
-        return response($message, $code);
+        return response($message, 400);
     }
         
 }

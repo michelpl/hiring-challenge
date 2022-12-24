@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('government_id');
             $table->string('email');
-            $table->bigInteger('debt_amount');
-            $table->bigInteger('paid_amount')->default(0);
+            $table->float('debt_amount');
+            $table->float('paid_amount')->default(0);
             $table->date('debt_due_date');
             $table->dateTime('paid_at')->nullable(true);
             $table->timestamps();

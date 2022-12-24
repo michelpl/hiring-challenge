@@ -11,13 +11,13 @@ class Charge extends Model
     
     protected $fillable = [
         'name',
-        'governmentId',
+        'government_id',
         'email',
-        'debtAmount',
-        'debtDueDate',
-        'debtId',
-        'paidAt',
-        'paidAmount',
-        'paidBy'
+        'debt_amount',
+        'debt_due_date',
+        'debt_id',
+        'paid_at',
+        'paid_amount',
+        'paid_by'
     ];
 }
