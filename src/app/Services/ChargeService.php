@@ -10,4 +10,8 @@ class ChargeService
     {
         return Charge::paginate($rowsPerPage);
     }
+
+    public function createCharge() {
+
+    }
 }
