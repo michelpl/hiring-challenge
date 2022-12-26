@@ -23,8 +23,7 @@ Route::group(['prefix' => 'V1'], function () {
     });
 
     Route::controller(ChargeController::class)->group(function () {
-        Route::get('/charges', 'index');
-        Route::get('/charges/{id}', 'show');
+        Route::get('/charges', 'list');
         Route::post('/charges', 'store');
     });
 

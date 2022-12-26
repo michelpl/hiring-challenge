@@ -11,7 +11,12 @@ class ChargeService
         return Charge::paginate($rowsPerPage);
     }
 
-    public function createCharge() {
+    public function createCharge(Charge $charge): Charge {
+        $charge->saveOrFail();
+        return $charge;
+    }
+
+    public function createChargeFromList() {
 
     }
 }

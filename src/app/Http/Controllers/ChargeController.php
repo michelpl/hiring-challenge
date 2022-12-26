@@ -39,20 +39,14 @@ class ChargeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function list(): Response
     {
-        (int) $rowsPerPage = 10;
-        return $this->chargeService->paginatedChargeList($rowsPerPage);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        try {
+            (int) $rowsPerPage = env("CHARGE_LIST_ROWS_PER_PAGE");
+            return $this->chargeService->paginatedChargeList($rowsPerPage);
+        } catch(Exception $e) {
+            return $this->handleResponseException($e);
+        }
     }
 
     /**
@@ -61,64 +55,19 @@ class ChargeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $request->validate($this->chargeValidationRules);
-
-            $charge = $this->chargeFactory->createFromRequestData($request);
-            $charge->saveOrFail();
+            $charge = $this->chargeService->createCharge(
+                $this->chargeFactory->createFromRequestData($request)
+            );
 
             return response($charge, 201);
 
-        } catch (\Exception $exception) {
-            return $this->handleResponseException($exception);
+        } catch (\Exception $e) {
+            return $this->handleResponseException($e);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Charge $charge)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Charge $charge)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateChargeRequest  $request
-     * @param  \App\Models\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateChargeRequest $request, Charge $charge)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Charge  $charge
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Charge $charge)
-    {
-        //
     }
 
     private function handleResponseException(\Exception $exception): Response
@@ -136,7 +85,6 @@ class ChargeController extends Controller
             $code = 422;
         }
 
-        return response($message, 400);
+        return response($message, $code);
     }
-        
 }

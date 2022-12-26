@@ -7,7 +7,7 @@
 /public/storage
 /storage/*.key
 /vendor
-#For delivery purpose .env
+#Commented for delivery purpose .env
 .env.backup
 .env.production
 .phpunit.result.cache
