@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\ChargeFactory;
 use App\Http\Requests\UpdateChargeRequest;
 use App\Models\Charge;
 use App\Services\ChargeService;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use App\Factories\ChargeFactory;
+use Illuminate\Http\Response;
+use TheSeer\Tokenizer\Exception;
 
 class ChargeController extends Controller
 {
@@ -16,7 +16,7 @@ class ChargeController extends Controller
     private Charge $charge;
     private ChargeFactory $chargeFactory;
 
-    private array $validationRules = [
+    private array $chargeValidationRules = [
             'name' => 'required|max:255|string',
             'governmentId' => 'required|min:11|max:13|string',
             'email' => 'required|email',
@@ -27,7 +27,7 @@ class ChargeController extends Controller
 
     function __construct(
         ChargeFactory $chargeFactory, 
-        ChargeService $chargeService
+        ChargeService $chargeService,
     )
     {
         $this->chargeFactory = $chargeFactory;
@@ -64,7 +64,7 @@ class ChargeController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate($this->validationRules);
+            $request->validate($this->chargeValidationRules);
 
             $charge = $this->chargeFactory->createFromRequestData($request);
             $charge->saveOrFail();

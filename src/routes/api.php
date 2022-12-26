@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\CsvDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,11 +15,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['prefix' => 'V1'], function () {
 
     //API ROOT
@@ -30,5 +26,9 @@ Route::group(['prefix' => 'V1'], function () {
         Route::get('/charges', 'index');
         Route::get('/charges/{id}', 'show');
         Route::post('/charges', 'store');
+    });
+
+    Route::controller(CsvDataController::class)->group(function () {
+        Route::post('/csvdata','store');
     });
 });
