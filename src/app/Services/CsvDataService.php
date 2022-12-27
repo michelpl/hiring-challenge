@@ -16,6 +16,8 @@ use App\Factories\ChargeFactory;
                   
 class CsvDataService 
 {
+    const CHARGES_TABLE = 'charges';
+    const CSV_FILE_TABLE = 'csv_data';
     private CsvDataFactory $csvDataFactory;
     private ChargeFactory $chargeFactory;
     private CsvData $csvData;
@@ -43,20 +45,24 @@ class CsvDataService
     public function createChargeFromDatabase() 
     {
         try {
-            $collection = $this->getCsvList();
+            DB::beginTransaction();
 
-            foreach ($collection as $csvFile) {
-                $this->createCharges($csvFile);
+            foreach ($this->getCsvList() as $csvFile) {
+                if ( $this->createCharges($csvFile)) {
+                    $this->updateCsvStatus($csvFile->id);
+                }
             }
+
+            DB::commit();
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
 
-    private function createCharges(stdClass $csvFile): void
+    private function createCharges(stdClass $csvFile): bool
     {
         if (empty($csvFile->csv_header) || empty($csvFile->csv_data)) {
-            throw new Exception("Not formated CSV file", Response::HTTP_UNPROCESSABLE_ENTITY);
+            throw new Exception("Not formatted CSV file", Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $header = json_decode($csvFile->csv_header);
@@ -66,12 +72,20 @@ class CsvDataService
             $newData[] = $this->chargeFactory->createFromCsvRow(array_combine($header, $newCharge));
         }
 
-        DB::table('charges')->insert($newData);
+        return DB::table(self::CHARGES_TABLE)->insert($newData);
+    }
+
+    private function updateCsvStatus(int $csvFileId)
+    {
+        DB::table(self::CSV_FILE_TABLE)
+        ->where('id', $csvFileId)
+        ->update(['status' => 'migrated']);
     }
 
     private function getCsvList(): Collection {
-        return DB::table('csv_data')
+        return DB::table(self::CSV_FILE_TABLE)
         ->oldest()
+        ->where('status', 'pending')
         ->limit(env('CSV_PROCESSING_LIMIT', 1))
         ->get();
     }

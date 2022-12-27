@@ -35,7 +35,7 @@ class CsvDataController extends Controller
     public function createChargeFromCSVDatabase() {
         try {
             $this->csvDataService->createChargeFromDatabase();
-            return response(Response::HTTP_OK);
+            return response('', Response::HTTP_OK);
         } catch(\Exception $e) {
             return response($e->getMessage(), $e->getCode());
         }
