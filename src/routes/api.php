@@ -29,5 +29,6 @@ Route::group(['prefix' => 'V1'], function () {
 
     Route::controller(CsvDataController::class)->group(function () {
         Route::post('/csvdata','store');
+        Route::post('/charges/csv_data','createChargeFromCSVDatabase');
     });
 });

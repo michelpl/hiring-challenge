@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('csv_filename');
             $table->json('csv_header');
             $table->json('csv_data');
+            $table->enum('status', ['pending', 'migrated'])->default('pending');
             $table->timestamps();
         });
     }
