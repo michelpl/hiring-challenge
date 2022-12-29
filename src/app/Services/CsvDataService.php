@@ -10,69 +10,94 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
-use TheSeer\Tokenizer\Exception;
-use Throwable;
 use App\Factories\ChargeFactory;
+use App\Services\BoletoService;
+use App\Services\ChargeService;
                   
 class CsvDataService 
 {
-    const CHARGES_TABLE = 'charges';
     const CSV_FILE_TABLE = 'csv_data';
     private CsvDataFactory $csvDataFactory;
     private ChargeFactory $chargeFactory;
     private CsvData $csvData;
     private Charge $charge;
+    private BoletoService $boletoService;
+    private ChargeService $chargeService;
 
     function __construct(
         CsvDataFactory $csvDataFactory, 
         ChargeFactory $chargeFactory,
         CsvData $csvData, 
-        Charge $charge
+        Charge $charge,
+        BoletoService $boletoService,
+        ChargeService $chargeService
     )
     {
         $this->csvDataFactory = $csvDataFactory;
         $this->chargeFactory = $chargeFactory;
         $this->csvData = $csvData;
         $this->charge = $charge;
+        $this->boletoService = $boletoService;
+        $this->chargeService = $chargeService;
     }
     
-    public function createFromRequestData(Request $request): bool | Throwable
+    public function createFromRequestData(Request $request)
     {
-        $csvData = $this->csvDataFactory->createFromRequestData($request);
-        return $csvData->saveOrFail();
+        try {
+            $csvData = $this->csvDataFactory->createFromRequestData($request);
+            DB::beginTransaction();
+            $csvData->upsert([
+                'csv_file_hash' => $csvData->csv_file_hash,
+                'csv_filename' => $csvData->csv_filename,
+                'csv_header' => $csvData->csv_header,
+                'csv_data' => $csvData->csv_data
+            ], 'csv_file_hash');
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
     }
     
     public function createChargeFromDatabase() 
     {
         try {
-            DB::beginTransaction();
-
             foreach ($this->getCsvList() as $csvFile) {
-                if ( $this->createCharges($csvFile)) {
-                    $this->updateCsvStatus($csvFile->id);
+                return $this->createCharges($csvFile);
+                if (!$this->createCharges($csvFile)) {
+                    return false;
                 }
+                $this->updateCsvStatus($csvFile->id);
             }
 
-            DB::commit();
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage(), $e->getCode());
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
         }
     }
 
-    private function createCharges(stdClass $csvFile): bool
+    private function createCharges(stdClass $csvFile)
     {
-        if (empty($csvFile->csv_header) || empty($csvFile->csv_data)) {
-            throw new Exception("Not formatted CSV file", Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $header = json_decode($csvFile->csv_header);
-        $data = json_decode($csvFile->csv_data);
         
-        foreach ($data as $newCharge) {
-            $newData[] = $this->chargeFactory->createFromCsvRow(array_combine($header, $newCharge));
+        if (empty($csvFile->csv_header) || empty($csvFile->csv_data)) {
+            throw new \Exception("Not formatted CSV file", Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        $data = json_decode($csvFile->csv_data);
+        $header = json_decode($csvFile->csv_header);
+
+        if (empty($data)) {
+            return false;
+        }
+        
+        foreach ($data as $chargeArray) {
+            $charge = $this->chargeFactory->createFromArray(array_combine($header, $chargeArray));
+            if(!$this->chargeService->createCharge($charge)) {
+                return false;
+            }
         }
 
-        return DB::table(self::CHARGES_TABLE)->insert($newData);
+        return true;
     }
 
     private function updateCsvStatus(int $csvFileId)
@@ -90,9 +115,16 @@ class CsvDataService
         ->get();
     }
 
-    public function validateHttpRequest(Request $request): bool | Throwable{
-        if ($request->file('csv_file')->getClientOriginalExtension() != env('DATA_FILE_EXTENSION')) {
-            throw new Exception(
+    public function validateHttpRequest(Request $request): bool
+    {
+        if (empty($request->file('csv_file'))) {
+            throw new \Exception('Empty csv_file field', Response::HTTP_BAD_REQUEST);
+        }
+
+        if (
+            $request->file('csv_file')->getClientOriginalExtension() != env('DATA_FILE_EXTENSION')
+        ) {
+            throw new \Exception(
                 'Not supported file extension: ' .
                 $request->file('csv_file')->getClientOriginalExtension() .
                 ' | Send the correct file extension: '.
@@ -102,7 +134,7 @@ class CsvDataService
         }
 
         if ($request->file('csv_file')->getSize() > env('MAX_DATA_FILE_SIZE_IN_BYTES')) {
-            throw new Exception(
+            throw new \Exception(
                     env('DATA_FILE_EXTENSION') . 
                         " file size should be shorter than" . 
                         env('MAX_DATA_FILE_SIZE_IN_BYTES') . 

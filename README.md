@@ -49,10 +49,40 @@ http://localhost:8000/api/V1
 ## Development environment
 
 ```bash
+$ find src/ -type d -exec chmod 775 {} \;
+$ find src/ -type f -exec chmod 664 {} \;
 $ chown -R $USER:www-data source
 ```
 
 ## Api doc
 [API doc](https://#)
 
-## Next steps
+## To-do list
+
+## Improvements
+
+[] Change hash to UUID
+[] Create repositories
+[x] Create sequence diagram
+[] Swagger
+[] Postman docs
+[] Unit tests
+[] Logs
+[] Create charges using a queue sytem
+[] Check types
+
+## Features
+
+[x] User->csv_data_api:send csv file
+[x] csv_data_api->Database:save csv file
+
+[!] Cron job->charge_api:Post request
+[x] charge_api->Database:Get csv_data
+[x] Database->charge_api:Return csv_data
+[x] charge_api->Database:Create charges 
+[] charge_api->Database:Create charge payment data (boleto) for each charge
+
+[] Cron job->charge_api:Trigger e-mail sending
+[] Database<-charge_api:Get boleto list
+[] Database->charge_api:Return boleto list
+[] charge_api->Customers:Send e-mails containing boleto data to each customer

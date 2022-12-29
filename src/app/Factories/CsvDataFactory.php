@@ -3,6 +3,7 @@
 namespace App\Factories;
 use App\Models\CsvData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use TheSeer\Tokenizer\Exception;
 
 class CsvDataFactory implements FactoryInterface
@@ -19,8 +20,9 @@ class CsvDataFactory implements FactoryInterface
         $header = array_shift($data);
 
         if (empty($data)) {
-            throw new Exception("Empty csv file");
+            throw new \Exception("Empty csv file");
         }
+        $this->csvData->csv_file_hash = hash_file('md5', $requestData->file('csv_file')->getRealPath());
         $this->csvData->csv_filename = $requestData->file('csv_file')->getClientOriginalName();
         $this->csvData->csv_header = json_encode($header);
         $this->csvData->csv_data = json_encode($data);

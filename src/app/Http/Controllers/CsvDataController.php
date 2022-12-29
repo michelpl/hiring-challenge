@@ -34,8 +34,13 @@ class CsvDataController extends Controller
 
     public function createChargeFromCSVDatabase() {
         try {
-            $this->csvDataService->createChargeFromDatabase();
-            return response('', Response::HTTP_OK);
+            return $this->csvDataService->createChargeFromDatabase();
+            if ($this->csvDataService->createChargeFromDatabase()) {
+                return response('', Response::HTTP_CREATED);
+            }
+
+            return response('Could not create charges from csv_file' , Response::HTTP_UNPROCESSABLE_ENTITY);
+            
         } catch(\Exception $e) {
             return response($e->getMessage(), $e->getCode());
         }

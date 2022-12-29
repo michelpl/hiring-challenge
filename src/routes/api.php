@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoletoController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\CsvDataController;
 use Illuminate\Http\Request;
@@ -25,10 +26,15 @@ Route::group(['prefix' => 'V1'], function () {
     Route::controller(ChargeController::class)->group(function () {
         Route::get('/charges', 'list');
         Route::post('/charges', 'store');
+        Route::post('/charges/send', 'sendChargeToCustomer');
     });
 
     Route::controller(CsvDataController::class)->group(function () {
         Route::post('/csvdata','store');
         Route::post('/charges/csv_data','createChargeFromCSVDatabase');
+    });
+
+    Route::controller(BoletoController::class)->group(function () {
+        Route::post('/boletos','generate');
     });
 });

@@ -8,7 +8,6 @@ use App\Models\Charge;
 use App\Services\ChargeService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use TheSeer\Tokenizer\Exception;
 
 class ChargeController extends Controller
 {
@@ -34,27 +33,16 @@ class ChargeController extends Controller
         $this->chargeService = $chargeService;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function list(): Response
     {
         try {
             (int) $rowsPerPage = env("CHARGE_LIST_ROWS_PER_PAGE");
             return $this->chargeService->paginatedChargeList($rowsPerPage);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             return $this->handleResponseException($e);
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request): Response
     {
         try {
@@ -64,6 +52,18 @@ class ChargeController extends Controller
             );
 
             return response($charge, 201);
+
+        } catch (\Exception $e) {
+            return $this->handleResponseException($e);
+        }
+    }
+
+    public function sendChargeToCustomer(): Response
+    {
+        try {
+            $this->chargeService->sendChargeToCustomer();
+
+            return response('', 200);
 
         } catch (\Exception $e) {
             return $this->handleResponseException($e);

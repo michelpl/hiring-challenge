@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('government_id');
             $table->string('email');
             $table->float('debt_amount');
-            $table->float('paid_amount')->default(0);
+            $table->float('paid_amount')->default(0)->nullable();
             $table->date('debt_due_date');
-            $table->dateTime('paid_at')->nullable(true);
+            $table->enum('payment_status', ['created', 'sent', 'paid', 'partial_payment'])->default('created');
+            $table->dateTime('paid_at')->nullable();
+            $table->string('paid_by')->nullable();
             $table->timestamps();
         });
     }

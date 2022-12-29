@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Boleto;
+use App\Models\Charge;
+use App\Services\IBoletoPaymentService;
+use Faker\Provider\sv_SE\Payment;
+
+class BoletoService implements IBoletoPaymentService
+{
+    private Boleto $boleto;
+    function __construct(Boleto $boleto)
+    {
+        $this->boleto = $boleto;
+    }
+
+    public function createPaymentMethod(Charge $charge): Boleto
+    {
+        //Replace for external service interface
+        $boleto = new Boleto;
+        $boleto->barcode = (string) random_int(999999999, 9999999999999);
+        $boleto->government_id = $charge->government_id;
+        $boleto->charge_id = $charge->id;
+        $boleto->amount = $charge->debt_amount;
+        $boleto->debt_due_date = $charge->debt_due_date; 
+        
+        return $boleto;
+    }
+
+    public function createChargePaymentMethod(Charge $charge)
+    {
+        $payment = $this->createPaymentMethod($charge);
+
+        $payment->firstOrCreate(
+            ['charge_id' => $payment->charge_id],
+            [
+                'barcode' => $payment->barcode,
+                'government_id' => $payment->government_id,
+                'charge_id' => $payment->charge_id,
+                'amount' => $payment->amount,
+                'debt_due_date' => $payment->debt_due_date,
+            ]
+        );
+        
+        return true;
+    }
+}

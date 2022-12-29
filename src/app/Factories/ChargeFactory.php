@@ -25,14 +25,15 @@ class ChargeFactory implements FactoryInterface
         return $this->charge;
     }
 
-    public function createFromCsvRow(Array $csvRow): array
-    {
-        $charge['debt_id'] = (int) $csvRow['debtId'];
-        $charge['name'] = $csvRow['name'];
-        $charge['government_id'] = preg_replace('/[^0-9]/', '', $csvRow['governmentId']);
-        $charge['email'] = $csvRow['email'];
-        $charge['debt_amount'] = $csvRow['debtAmount'];
-        $charge['debt_due_date'] = $csvRow['debtDueDate'];
+    public function createFromArray(array $csvRow): Charge
+        {
+        $charge = new Charge;
+        $charge->debt_id = (int) $csvRow['debtId'];
+        $charge->name = $csvRow['name'];
+        $charge->government_id = preg_replace('/[^0-9]/', '', $csvRow['governmentId']);
+        $charge->email = $csvRow['email'];
+        $charge->debt_amount = $csvRow['debtAmount'];
+        $charge->debt_due_date = $csvRow['debtDueDate'];
 
         return $charge;
     }

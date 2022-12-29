@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('csv_data', function (Blueprint $table) {
             $table->id();
+            $table->string('csv_file_hash')->index('csv_file_hash')->unique('csv_file_hash');
             $table->string('csv_filename');
             $table->json('csv_header');
             $table->json('csv_data');
