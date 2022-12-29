@@ -4,14 +4,15 @@ namespace App\Services;
 
 use App\Models\Boleto;
 use App\Models\Charge;
+use App\Repositories\LogRepository;
 use App\Services\IBoletoPaymentService;
 use Faker\Provider\sv_SE\Payment;
+use TheSeer\Tokenizer\Exception;
 
 class BoletoService implements IBoletoPaymentService
 {
     private Boleto $boleto;
-    function __construct(Boleto $boleto)
-    {
+    public function __construct(Boleto $boleto){
         $this->boleto = $boleto;
     }
 
@@ -28,21 +29,28 @@ class BoletoService implements IBoletoPaymentService
         return $boleto;
     }
 
-    public function createChargePaymentMethod(Charge $charge)
-    {
-        $payment = $this->createPaymentMethod($charge);
+    public function createChargePaymentMethod(Charge $charge){
+        try{
+            $payment = $this->createPaymentMethod($charge);
 
-        $payment->firstOrCreate(
-            ['charge_id' => $payment->charge_id],
-            [
-                'barcode' => $payment->barcode,
-                'government_id' => $payment->government_id,
-                'charge_id' => $payment->charge_id,
-                'amount' => $payment->amount,
-                'debt_due_date' => $payment->debt_due_date,
-            ]
-        );
-        
-        return true;
+            $payment->firstOrCreate(
+                ['charge_id' => $payment->charge_id],
+                [
+                    'barcode' => $payment->barcode,
+                    'government_id' => $payment->government_id,
+                    'charge_id' => $payment->charge_id,
+                    'amount' => $payment->amount,
+                    'debt_due_date' => $payment->debt_due_date,
+                ]
+            );
+        }catch(Exception $e){
+            LogRepository::warning(
+                'Could not create payment method for charge: ' . 
+                serialize($charge) . ' | ' . 
+                $e->getMessage()
+            );
+
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
     }
 }

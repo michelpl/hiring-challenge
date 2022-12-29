@@ -3,15 +3,15 @@
 namespace App\Services;
 
 use App\Models\Charge;
+use App\Repositories\LogRepository;
 use Illuminate\Support\Facades\DB;
-use Throwable;
+use Exception;
 
 class ChargeService 
 {
     private BoletoService $paymentService;
 
-    function __construct(BoletoService $boletoService)
-    {
+    public function __construct(BoletoService $boletoService){
         $this->paymentService = $boletoService;
     }
 
@@ -21,7 +21,7 @@ class ChargeService
         return Charge::paginate($rowsPerPage);
     }
 
-    public function createCharge(Charge $charge) 
+    public function createCharge(Charge $charge): Charge | null 
     {
         try {
             DB::beginTransaction();
@@ -43,16 +43,24 @@ class ChargeService
             $this->paymentService->createChargePaymentMethod($createdCharge);
 
             DB::commit();
-            
-            return true;
 
-        } catch (\Exception $e) {
+            LogRepository::info('Charge created for debt_id: ' . $createdCharge->debt_id);
+
+            return $createdCharge;
+
+        } catch (Exception $e) {
             DB::rollBack();
-            return $e->getMessage();
+
+            LogRepository::warning(
+                'Could not charge: ' . 
+                serialize($charge) . ' | ' . 
+                $e->getMessage()
+            );
+            return null;
         }
     }
 
-    public function sendChargeToCustomer(): Throwable
+    public function sendChargeToCustomer(): void
     {
         //Enviar e-mail
     }

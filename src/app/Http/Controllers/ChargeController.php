@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Factories\ChargeFactory;
 use App\Http\Requests\UpdateChargeRequest;
 use App\Models\Charge;
+use App\Repositories\LogRepository;
 use App\Services\ChargeService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -24,11 +26,10 @@ class ChargeController extends Controller
             'debtId' => 'required|integer|min:1|max:99999999'
     ];
 
-    function __construct(
+    public function __construct(
         ChargeFactory $chargeFactory, 
         ChargeService $chargeService,
-    )
-    {
+    ){
         $this->chargeFactory = $chargeFactory;
         $this->chargeService = $chargeService;
     }
@@ -38,8 +39,8 @@ class ChargeController extends Controller
         try {
             (int) $rowsPerPage = env("CHARGE_LIST_ROWS_PER_PAGE");
             return $this->chargeService->paginatedChargeList($rowsPerPage);
-        } catch(\Exception $e) {
-            return $this->handleResponseException($e);
+        } catch(Exception $e) {
+            return $this->handleExceptionResponse($e);
         }
     }
 
@@ -53,8 +54,8 @@ class ChargeController extends Controller
 
             return response($charge, 201);
 
-        } catch (\Exception $e) {
-            return $this->handleResponseException($e);
+        } catch (Exception $e) {
+            return $this->handleExceptionResponse($e);
         }
     }
 
@@ -65,18 +66,20 @@ class ChargeController extends Controller
 
             return response('', 200);
 
-        } catch (\Exception $e) {
-            return $this->handleResponseException($e);
+        } catch (Exception $e) {
+            return $this->handleExceptionResponse($e);
         }
     }
 
-    private function handleResponseException(\Exception $exception): Response
+    private function handleExceptionResponse(Exception $e): Response
     {
-        $message = $exception->getMessage();
-        $code = $exception->getCode();
+        $message = $e->getMessage();
+        $code = $e->getCode();
 
-        if (isset($exception->validator)) {
-            $validator = $exception->validator;
+        LogRepository::warning('Could not create charge:' . $e->getMessage());
+
+        if (isset($e->validator)) {
+            $validator = $e->validator;
             $message = [
                 'Invalid request data',
                 $validator->messages()

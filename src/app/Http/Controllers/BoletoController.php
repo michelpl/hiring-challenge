@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BoletoController extends Controller
 {
     private BoletoService $boletoService;
-    function __construct(BoletoService $boletoService)
-    {
+    public function __construct(BoletoService $boletoService){
         $this->boletoService = $boletoService;
     }
 

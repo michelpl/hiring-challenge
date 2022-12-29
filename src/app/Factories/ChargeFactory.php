@@ -1,15 +1,28 @@
 <?php
 
 namespace App\Factories;
+
 use App\Models\Charge;
+use App\Repositories\LogRepository;
 use Illuminate\Http\Request;
-use Throwable;
+use App\Factories\FactoryInterface;
 
 class ChargeFactory implements FactoryInterface
 {
+    const CHARGE_FIELDS = [
+        'name',
+        'government_id',
+        'email',
+        'debt_amount',
+        'debt_due_date',
+        'debt_id',
+        'paid_at',
+        'paid_amount',
+        'paid_by'
+    ];
+
     private Charge $charge;
-    function __construct(Charge $charge)
-    {
+    public function __construct(Charge $charge){
         $this->charge = $charge;
     }
 
@@ -26,7 +39,7 @@ class ChargeFactory implements FactoryInterface
     }
 
     public function createFromArray(array $csvRow): Charge
-        {
+    {
         $charge = new Charge;
         $charge->debt_id = (int) $csvRow['debtId'];
         $charge->name = $csvRow['name'];

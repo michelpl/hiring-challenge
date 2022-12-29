@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Factories;
+
 use App\Models\CsvData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use TheSeer\Tokenizer\Exception;
+use App\Factories\FactoryInterface;
 
 class CsvDataFactory implements FactoryInterface
 {
     private CsvData $csvData;
-    function __construct(CsvData $csvData)
-    {
+    public function __construct(CsvData $csvData){
         $this->csvData = $csvData;
     }
 

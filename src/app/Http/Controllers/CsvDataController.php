@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Factories\CsvDataFactory;
 use App\Models\CsvData;
+use App\Repositories\LogRepository;
 use App\Services\CsvDataService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -14,35 +16,36 @@ class CsvDataController extends Controller
     private CsvDataFactory $csvDataFactory;
     private CsvDataService $csvDataService;
 
-    function __construct(CsvDataFactory $csvDataFactory, CsvData $csvData, CsvDataService $csvDataService)
-    {
+    public function __construct(CsvDataFactory $csvDataFactory, CsvData $csvData, CsvDataService $csvDataService){
         $this->csvData = $csvData;
         $this->csvDataFactory = $csvDataFactory;
         $this->csvDataService = $csvDataService;
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $this->csvDataService->validateHttpRequest($request);
             $this->csvDataService->createFromRequestData($request);
+
             return response(null, Response::HTTP_CREATED);
-        } catch(\Exception $e) {
+
+        } catch(Exception $e) {
+            LogRepository::warning('Could not save csv file on database: ' . $e->getMessage());
             return response($e->getMessage(), $e->getCode());
         }
     }
 
-    public function createChargeFromCSVDatabase() {
+    public function createChargeFromCSVDatabase(): Response
+    {
         try {
-            return $this->csvDataService->createChargeFromDatabase();
-            if ($this->csvDataService->createChargeFromDatabase()) {
-                return response('', Response::HTTP_CREATED);
-            }
-
-            return response('Could not create charges from csv_file' , Response::HTTP_UNPROCESSABLE_ENTITY);
+            $this->csvDataService->createChargeFromDatabase();
             
-        } catch(\Exception $e) {
-            return response($e->getMessage(), $e->getCode());
+            return response('', Response::HTTP_CREATED);
+            
+        } catch(Exception $e) {
+            LogRepository::warning('Could not create charges from csv file saved on database: ' . $e->getMessage());
+            return response('Could not create charges from csv_file saved on database' , Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 }
