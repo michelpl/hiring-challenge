@@ -16,7 +16,7 @@ use App\Services\BoletoService;
 use App\Services\ChargeService;
 use Exception;
                   
-class CsvDataService 
+class CsvDataService
 {
     const CSV_FILE_TABLE = 'csv_data';
     private CsvDataFactory $csvDataFactory;
@@ -33,7 +33,7 @@ class CsvDataService
         Charge $charge,
         BoletoService $boletoService,
         ChargeService $chargeService
-    ){
+    ) {
         $this->csvDataFactory = $csvDataFactory;
         $this->chargeFactory = $chargeFactory;
         $this->csvData = $csvData;
@@ -49,12 +49,14 @@ class CsvDataService
 
             $csvData = $this->csvDataFactory->createFromRequestData($request);
             DB::beginTransaction();
-            $csvData->upsert([
+            $csvData->upsert(
+                [
                 'csv_file_hash' => $csvData->csv_file_hash,
                 'csv_filename' => $csvData->csv_filename,
                 'csv_header' => $csvData->csv_header,
                 'csv_data' => $csvData->csv_data
-            ], 'csv_file_hash');
+                ], 'csv_file_hash'
+            );
 
             DB::commit();
             LogRepository::info('CSV file saved:' . $csvData->csv_filename);
@@ -66,7 +68,8 @@ class CsvDataService
         }
     }
     
-    public function createChargeFromDatabase():void {
+    public function createChargeFromDatabase():void
+    {
         try {
             $csvFiles = $this->getCsvFilesFromDatabase();
 
@@ -117,21 +120,19 @@ class CsvDataService
 
     private function updateCsvStatus(int $csvFileId): void
     {
-        if(
-            !DB::table(self::CSV_FILE_TABLE)
-            ->where('id', $csvFileId)
-            ->update(['status' => 'migrated'])
+        if(!DB::table(self::CSV_FILE_TABLE)->where('id', $csvFileId)->update(['status' => 'migrated'])
         ) {
             LogRepository::info("Could not update the csv file status for csv file id: " . $csvFileId);
         }
     }
 
-    private function getCsvFilesFromDatabase(): Collection {
+    private function getCsvFilesFromDatabase(): Collection
+    {
         return DB::table(self::CSV_FILE_TABLE)
-        ->oldest()
-        ->where('status', 'pending')
-        ->limit(env('CSV_PROCESSING_LIMIT', 1))
-        ->get();
+            ->oldest()
+            ->where('status', 'pending')
+            ->limit(env('CSV_PROCESSING_LIMIT', 1))
+            ->get();
     }
 
     public function validateHttpRequest(Request $request): bool
@@ -140,8 +141,7 @@ class CsvDataService
             throw new Exception('Empty csv_file field', Response::HTTP_BAD_REQUEST);
         }
 
-        if (
-            $request->file('csv_file')->getClientOriginalExtension() != env('DATA_FILE_EXTENSION')
+        if ($request->file('csv_file')->getClientOriginalExtension() != env('DATA_FILE_EXTENSION')
         ) {
             throw new Exception(
                 'Not supported file extension: ' .
@@ -152,11 +152,11 @@ class CsvDataService
 
         if ($request->file('csv_file')->getSize() > env('MAX_DATA_FILE_SIZE_IN_BYTES')) {
             throw new Exception(
-                    env('DATA_FILE_EXTENSION') . 
+                env('DATA_FILE_EXTENSION') . 
                         " file size should be shorter than" . 
                         env('MAX_DATA_FILE_SIZE_IN_BYTES') . 
                         ' bytes', 
-                    Response::HTTP_UNPROCESSABLE_ENTITY
+                Response::HTTP_UNPROCESSABLE_ENTITY
             );     
         }
 

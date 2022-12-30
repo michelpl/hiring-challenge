@@ -16,7 +16,8 @@ class CsvDataController extends Controller
     private CsvDataFactory $csvDataFactory;
     private CsvDataService $csvDataService;
 
-    public function __construct(CsvDataFactory $csvDataFactory, CsvData $csvData, CsvDataService $csvDataService){
+    public function __construct(CsvDataFactory $csvDataFactory, CsvData $csvData, CsvDataService $csvDataService)
+    {
         $this->csvData = $csvData;
         $this->csvDataFactory = $csvDataFactory;
         $this->csvDataService = $csvDataService;
@@ -45,7 +46,7 @@ class CsvDataController extends Controller
             
         } catch(Exception $e) {
             LogRepository::warning('Could not create charges from csv file saved on database: ' . $e->getMessage());
-            return response('Could not create charges from csv_file saved on database' , Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response('Could not create charges from csv_file saved on database', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 }

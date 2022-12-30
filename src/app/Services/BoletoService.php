@@ -12,7 +12,8 @@ use TheSeer\Tokenizer\Exception;
 class BoletoService implements BoletoPaymentServiceInterface
 {
     private Boleto $boleto;
-    public function __construct(Boleto $boleto){
+    public function __construct(Boleto $boleto)
+    {
         $this->boleto = $boleto;
     }
 
@@ -29,7 +30,8 @@ class BoletoService implements BoletoPaymentServiceInterface
         return $boleto;
     }
 
-    public function createChargePaymentMethod(Charge $charge){
+    public function createChargePaymentMethod(Charge $charge)
+    {
         try{
             $payment = $this->createPaymentMethod($charge);
 

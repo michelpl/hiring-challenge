@@ -12,7 +12,8 @@ class EmailService
     private ChargeMail $chargeMail;
     private Charge $charge;
 
-    public function __construct(Charge $charge, ChargeMail $chargeMail){
+    public function __construct(Charge $charge, ChargeMail $chargeMail)
+    {
         $this->chargeMail = $chargeMail;
         $this->charge = $charge;
     }
@@ -30,7 +31,7 @@ class EmailService
     }
 
     /** 
-     *  @todo Replace for a queue consumer
+     * @todo Replace for a queue consumer
      * */    
     public function sendEmailList(array $chargeMailList): array
     {

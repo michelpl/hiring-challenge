@@ -28,7 +28,7 @@ class ChargeController extends Controller
     public function __construct(
         ChargeFactory $chargeFactory, 
         ChargeService $chargeService,
-    ){
+    ) {
         $this->chargeFactory = $chargeFactory;
         $this->chargeService = $chargeService;
     }

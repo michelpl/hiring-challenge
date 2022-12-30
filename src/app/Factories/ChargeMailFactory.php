@@ -7,7 +7,8 @@ use App\Models\ChargeMail;
 
 class ChargeMailFactory implements ChargeMailFactoryInterface
 {
-    public function __construct(){
+    public function __construct()
+    {
     }
     
     public function CreateFromCharge(Charge $charge): ChargeMail

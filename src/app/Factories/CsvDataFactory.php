@@ -11,7 +11,8 @@ use App\Factories\FactoryInterface;
 class CsvDataFactory implements FactoryInterface
 {
     private CsvData $csvData;
-    public function __construct(CsvData $csvData){
+    public function __construct(CsvData $csvData)
+    {
         $this->csvData = $csvData;
     }
 

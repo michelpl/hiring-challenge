@@ -22,7 +22,8 @@ class ChargeFactory implements FactoryInterface
     ];
 
     private Charge $charge;
-    public function __construct(Charge $charge){
+    public function __construct(Charge $charge)
+    {
         $this->charge = $charge;
     }
 

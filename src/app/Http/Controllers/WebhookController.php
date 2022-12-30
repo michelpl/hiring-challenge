@@ -21,7 +21,8 @@ class WebhookController extends Controller
     private ChargeService $chargeService;
     private WebhookRequest $webhookRequest;
 
-    public function __construct(ChargeService $chargeService, WebhookRequest $webhookRequest){
+    public function __construct(ChargeService $chargeService, WebhookRequest $webhookRequest)
+    {
         $this->chargeService = $chargeService;
         $this->webhookRequest = $webhookRequest;
     }
@@ -29,21 +30,22 @@ class WebhookController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function pay(Request $request){
+    public function pay(Request $request)
+    {
         {
-            try {
-                $request->validate($this->chargeValidationRules);
+        try {
+            $request->validate($this->chargeValidationRules);
 
-                $this->webhookRequest
-                    ->setDebtId($request->debtId)
-                    ->setPaidAmount($request->paidAmount)
-                    ->setPaidAt($request->paidAt)
-                    ->setPaidBy($request->paidBy);
+            $this->webhookRequest
+                ->setDebtId($request->debtId)
+                ->setPaidAmount($request->paidAmount)
+                ->setPaidAt($request->paidAt)
+                ->setPaidBy($request->paidBy);
 
-                return $this->chargeService->payCharge($this->webhookRequest);
-            } catch (Exception $e) {
-                return $this->handleExceptionResponse($e);
-            }
+            return $this->chargeService->payCharge($this->webhookRequest);
+        } catch (Exception $e) {
+            return $this->handleExceptionResponse($e);
+        }
         }
     }
 

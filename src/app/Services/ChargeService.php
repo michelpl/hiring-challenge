@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class ChargeService 
+class ChargeService
 {
     const STATUS_CREATED = 'created';
     const STATUS_SENT = 'sent';
@@ -31,7 +31,7 @@ class ChargeService
         EmailService $emailService,
         ChargeMail $chargeMail,
         ChargeMailFactory $chargeMailFactory
-    ){
+    ) {
         $this->charge = $charge;
         $this->paymentService = $boletoService;
         $this->emailService = $emailService;
@@ -117,11 +117,13 @@ class ChargeService
         }
     }
 
-    public function getChargeFromDebtId(int $debtId):Charge {
+    public function getChargeFromDebtId(int $debtId):Charge
+    {
         return Charge::where('debt_id', $debtId)->first();
     }
 
-    public function payCharge(WebhookRequest $webhookRequest): string {
+    public function payCharge(WebhookRequest $webhookRequest): string
+    {
         try {
             $charge = Charge::where('debt_id', $webhookRequest->getDebtId())->first();
         
@@ -132,21 +134,24 @@ class ChargeService
                 throw new Exception('', Response::HTTP_NOT_FOUND);
             }
             
-            if ($charge->status == self::STATUS_PAID) {
+            if (
+                $charge->status == self::STATUS_PAID ||
+                $charge->status == self::STATUS_OVERPAID
+            ) {
                 LogRepository::info('Charge already paid. debtId: ' . $webhookRequest->getDebtId());
                 throw new Exception('Charge already paid', Response::HTTP_OK);
             }
     
             $totalPaidAmount = $charge->paid_amount + $webhookRequest->getPaidAmount();
     
-            if($totalPaidAmount > $charge->debt_amount){
+            if($totalPaidAmount > $charge->debt_amount) {
                 LogRepository::info('Charge overpaid. debtId: ' . $webhookRequest->getDebtId());
                 
                 $charge->status = self::STATUS_OVERPAID;
                 $message = 'Charge overpaid. Total paid amount: ' . $totalPaidAmount;
             }
     
-            if($totalPaidAmount < $charge->debt_amount){
+            if($totalPaidAmount < $charge->debt_amount) {
                 LogRepository::info('Charge underpaid. debtId: ' . $webhookRequest->getDebtId());
                 
                 $charge->status = self::STATUS_UNDERPAID;
