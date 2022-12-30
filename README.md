@@ -67,21 +67,17 @@ $ chown -R www-data:$USER src
 
 ## Improvements
 
-[] Change hash to UUID
-[] Create repositories
+
 [x] Create sequence diagram
 [] Swagger
 [] Postman docs
 [] Unit tests
 [x] Logs
-[] Create charges using a queue sytem
-[] Check types
 [] Organize postman collection
 [] Fix main branch
-[] Run code lint
+[x] Run code lint
 [] Makefile
 [] Review readme
-[] Review exception handler
 
 
 ## Features
