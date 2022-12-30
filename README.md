@@ -1,5 +1,13 @@
 # Hiring Challenge
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
+
+## Api doc
+[Api documentation](https://documenter.getpostman.com/view/1954140/2s8Z6yYZHS)
+
+## Sequence diagram
+
+![image](https://user-images.githubusercontent.com/6605776/210117293-618adc93-f112-4d6f-bb22-dff6fa2f807d.png)
 
 
 ## Dependencies
@@ -29,10 +37,25 @@ cd hiring-challenge
 Run de follwing command
 
 ```bash
-make
+make run
+```
+Expected output:
+
+![image](https://user-images.githubusercontent.com/6605776/210116184-9ca95dce-9989-46fa-ad81-94361dc99400.png)
+
+## Building the environment (manually)
+
+Clone this repository
+
+```bash
+https://github.com/michelpl/hiring-challenge-docker.git
 ```
 
-![Using](https://imgur.com/FGTTwBT.gif)
+Enter in repository folder
+
+```bash
+cd hiring-challenge
+```
 
 Running services
 ```bash
@@ -44,7 +67,7 @@ Running Laravel migrations
 docker-compose exec webapi php artisan migrate
 ```
 
-Running Scheculed Tasks Manually
+Running Scheduled Tasks Manually
 ```bash
 docker-compose exec webapi php artisan schedule:run 
 ```
@@ -56,7 +79,7 @@ http://localhost:8000/api/V1
 
 ## Consuming the API
 
-- Get postman collection
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
 
 ## Development environment
 
@@ -68,42 +91,14 @@ $ find src/ -type f -exec chmod 664 {} \;
 $ chown -R www-data:$USER src
 ```
 
-## Api doc
-[API doc](https://#)
+## Running tests
 
-## To-do list
+```bash
+make test
+```
 
-## Improvements
+or
 
-
-[x] Create sequence diagram
-[] Swagger
-[] Postman docs
-[] Unit tests
-[x] Logs
-[] Organize postman collection
-[x] Fix main branch
-[x] Run code lint
-[] Makefile
-[] Review readme
-
-
-## Features
-
-[x] External request->csv_data_api:send csv file
-[x] csv_data_api->Database:save csv file
-
-[x] Cron job->charge_api:Post request
-[x] charge_api->Database:Get csv_data
-[x] Database->charge_api:Return csv_data
-[x] charge_api->Database:Create charges 
-[x] charge_api->Database:Create charge payment data (boleto) for each charge
-
-[!] Cron job->charge_api:Trigger e-mail sending
-[x] Database<-charge_api:Get boleto list
-[x] Database->charge_api:Return boleto list
-[x] charge_api->Customers:Send e-mails containing boleto data to each customer
-
-[x] External request->charge_api:Send a payment webhook
-[x] charge_api->database:Save payment data (paid amount, paid by, and charge status)
-[x] charge_api->database:Update charge status
+```bash
+docker exec -it webapi php artisan test
+```
