@@ -1,7 +1,7 @@
 # defines variables
 #include Make.config
 
-make:
+run:
 	docker-compose up -d 
 	docker-compose exec webapi php artisan migrate
 
