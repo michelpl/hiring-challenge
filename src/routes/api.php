@@ -3,6 +3,7 @@
 use App\Http\Controllers\BoletoController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\CsvDataController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,21 +21,17 @@ Route::group(['prefix' => 'V1'], function () {
 
     //API ROOT
     Route::get('/', function(){
-        return "KNST HIRING CHALLENGE";
+        return "KNT HIRING CHALLENGE";
     });
 
     Route::controller(ChargeController::class)->group(function () {
         Route::get('/charges', 'list');
         Route::post('/charges', 'store');
-        Route::post('/charges/send', 'sendChargeToCustomer');
+        Route::post('/charges/send', 'sendChargeToCustomers');
     });
 
     Route::controller(CsvDataController::class)->group(function () {
         Route::post('/csvdata','store');
         Route::post('/charges/csv_data','createChargeFromCSVDatabase');
-    });
-
-    Route::controller(BoletoController::class)->group(function () {
-        Route::post('/boletos','generate');
     });
 });

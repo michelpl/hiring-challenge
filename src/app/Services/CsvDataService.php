@@ -58,6 +58,7 @@ class CsvDataService
 
             DB::commit();
             LogRepository::info('CSV file saved:' . $csvData->csv_filename);
+
         } catch (Exception $e) {
             DB::rollBack();
             LogRepository::warning('Could not save CSV file on database: ' . $e->getMessage());
@@ -144,9 +145,7 @@ class CsvDataService
         ) {
             throw new Exception(
                 'Not supported file extension: ' .
-                $request->file('csv_file')->getClientOriginalExtension() .
-                ' | Send the correct file extension: '.
-                env('DATA_FILE_EXTENSION'),
+                $request->file('csv_file')->getClientOriginalExtension(),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }

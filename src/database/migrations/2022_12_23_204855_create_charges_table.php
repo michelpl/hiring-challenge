@@ -24,7 +24,7 @@ return new class extends Migration
             $table->float('debt_amount');
             $table->float('paid_amount')->default(0)->nullable();
             $table->date('debt_due_date');
-            $table->enum('payment_status', ['created', 'sent', 'paid', 'partial_payment'])->default('created');
+            $table->enum('status', ['created', 'sent', 'paid', 'partial_payment'])->default('created');
             $table->dateTime('paid_at')->nullable();
             $table->string('paid_by')->nullable();
             $table->timestamps();

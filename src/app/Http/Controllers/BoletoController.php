@@ -16,7 +16,7 @@ class BoletoController extends Controller
         $this->boletoService = $boletoService;
     }
 
-    public function generate(): Response
+    public function generate()
     {
         return response('', Response::HTTP_CREATED);
     }

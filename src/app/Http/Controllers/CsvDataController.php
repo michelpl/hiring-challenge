@@ -22,7 +22,7 @@ class CsvDataController extends Controller
         $this->csvDataService = $csvDataService;
     }
 
-    public function store(Request $request): Response
+    public function store(Request $request)
     {
         try {
             $this->csvDataService->validateHttpRequest($request);
@@ -36,7 +36,7 @@ class CsvDataController extends Controller
         }
     }
 
-    public function createChargeFromCSVDatabase(): Response
+    public function createChargeFromCSVDatabase()
     {
         try {
             $this->csvDataService->createChargeFromDatabase();

@@ -2,23 +2,42 @@
 
 namespace App\Services;
 
+use App\Factories\ChargeMailFactory;
 use App\Models\Charge;
+use App\Models\ChargeMail;
 use App\Repositories\LogRepository;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
 class ChargeService 
 {
+    const STATUS_CREATED = 'created';
+    const STATUS_SENT = 'sent';
+    const CHARGES_TABLE = 'charges';
     private BoletoService $paymentService;
+    private Charge $charge;
+    private EmailService $emailService;
+    private ChargeMail $chargeMail;
+    private ChargeMailFactory $chargeMailFactory;
 
-    public function __construct(BoletoService $boletoService){
+    public function __construct(
+        BoletoService $boletoService, 
+        Charge $charge, 
+        EmailService $emailService,
+        ChargeMail $chargeMail,
+        ChargeMailFactory $chargeMailFactory
+    ){
+        $this->charge = $charge;
         $this->paymentService = $boletoService;
+        $this->emailService = $emailService;
+        $this->chargeMail = $chargeMail;
+        $this->chargeMailFactory = $chargeMailFactory;
     }
 
-    const CHARGES_TABLE = 'charges';
-    public function paginatedChargeList(Int $rowsPerPage = 1) 
+    public function paginatedChargeList(Int $rowsPerPage = 1)
     {
-        return Charge::paginate($rowsPerPage);
+        LogRepository::info('Returning charge list...');
+        return Charge::simplePaginate($rowsPerPage);
     }
 
     public function createCharge(Charge $charge): Charge | null 
@@ -52,7 +71,7 @@ class ChargeService
             DB::rollBack();
 
             LogRepository::warning(
-                'Could not charge: ' . 
+                'Could not create charge: ' . 
                 serialize($charge) . ' | ' . 
                 $e->getMessage()
             );
@@ -60,8 +79,36 @@ class ChargeService
         }
     }
 
-    public function sendChargeToCustomer(): void
+    public function sendChargeToCustomers()
     {
-        //Enviar e-mail
+        try{
+            LogRepository::info('Starting e-mail sending...');
+
+            $chargeList =  
+                Charge::with(
+                    'boleto:charge_id,barcode,government_id,amount,debt_due_date'
+                )
+                ->where('status', self::STATUS_CREATED)
+                ->get();
+
+            $chargeMails = [];
+            
+            foreach($chargeList as $charge) {
+                $chargeMails[] = $this->chargeMailFactory->createFromCharge($charge);
+            }
+            $successfulIds = $this->emailService->sendEmailList($chargeMails);
+
+            Charge::whereIn("id", $successfulIds)
+            ->update(['status' => self::STATUS_SENT]);
+
+            LogRepository::info('...Finish e-mail sending');
+        }catch(Exception $e){
+            DB::rollBack();
+
+            LogRepository::warning(
+                'Could not send charge e-mails ' . 
+                $e->getMessage()
+            );
+        }
     }
 }

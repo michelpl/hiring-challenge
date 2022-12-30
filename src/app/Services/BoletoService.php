@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Models\Boleto;
 use App\Models\Charge;
 use App\Repositories\LogRepository;
-use App\Services\IBoletoPaymentService;
+use App\Services\BoletoPaymentServiceInterface;
 use Faker\Provider\sv_SE\Payment;
 use TheSeer\Tokenizer\Exception;
 
-class BoletoService implements IBoletoPaymentService
+class BoletoService implements BoletoPaymentServiceInterface
 {
     private Boleto $boleto;
     public function __construct(Boleto $boleto){

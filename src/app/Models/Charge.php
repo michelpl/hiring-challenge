@@ -22,10 +22,8 @@ class Charge extends Model
         'paid_by'
     ];
 
-    public function model(array $row)
+    public function boleto()
     {
-        return new Charge([
-           'name'     => $row[0]
-        ]);
+        return $this->hasOne(Boleto::class);
     }
 }

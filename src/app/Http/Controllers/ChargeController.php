@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Factories\ChargeFactory;
-use App\Http\Requests\UpdateChargeRequest;
 use App\Models\Charge;
 use App\Repositories\LogRepository;
 use App\Services\ChargeService;
@@ -34,17 +33,16 @@ class ChargeController extends Controller
         $this->chargeService = $chargeService;
     }
 
-    public function list(): Response
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        try {
-            (int) $rowsPerPage = env("CHARGE_LIST_ROWS_PER_PAGE");
-            return $this->chargeService->paginatedChargeList($rowsPerPage);
-        } catch(Exception $e) {
-            return $this->handleExceptionResponse($e);
-        }
+        return Charge::all();
+        return [1,2];
     }
-
-    public function store(Request $request): Response
+    
+    public function store(Request $request)
     {
         try {
             $request->validate($this->chargeValidationRules);
@@ -52,26 +50,27 @@ class ChargeController extends Controller
                 $this->chargeFactory->createFromRequestData($request)
             );
 
-            return response($charge, 201);
+            return response($charge, Response::HTTP_CREATED);
 
         } catch (Exception $e) {
             return $this->handleExceptionResponse($e);
         }
     }
-
-    public function sendChargeToCustomer(): Response
+    
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function sendChargeToCustomers()
     {
         try {
-            $this->chargeService->sendChargeToCustomer();
-
-            return response('', 200);
-
+            $this->chargeService->sendChargeToCustomers();
+            return response("", Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->handleExceptionResponse($e);
         }
     }
 
-    private function handleExceptionResponse(Exception $e): Response
+    private function handleExceptionResponse(Exception $e)
     {
         $message = $e->getMessage();
         $code = $e->getCode();

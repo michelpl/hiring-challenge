@@ -36,23 +36,23 @@ Running Laravel migrations
 docker-compose exec web php artisan migrate:fresh
 ```
 
-Creating Passport credentials
-```bash
-docker-compose exec web php artisan passport:install
-```
-
 ## The Hiring Challenge API will be avaliable on
 ```bash
 http://localhost:8000/api/V1
 ```
 
+## Consuming the API
+
+- Get postman collection
+
 ## Development environment
+
+In the project folder, run the following commands
 
 ```bash
 $ find src/ -type d -exec chmod 775 {} \;
 $ find src/ -type f -exec chmod 664 {} \;
-$ chown -R $USER:www-data source
-## Assuming that www-data is your Apache's default user
+$ chown -R www-data:$USER src
 ```
 
 ## Api doc
@@ -68,13 +68,14 @@ $ chown -R $USER:www-data source
 [] Swagger
 [] Postman docs
 [] Unit tests
-[...] Logs
+[x] Logs
 [] Create charges using a queue sytem
 [] Check types
 [] Organize postman collection
 [] Fix main branch
 [] Run code lint
 [] Makefile
+[] Review readme
 
 ## Features
 
