@@ -32,7 +32,7 @@ make
 ```
 Expected output:
 
-![image](https://user-images.githubusercontent.com/6605776/210115270-7a68bbc4-8eb4-40ad-93c2-23a779702886.png)
+![image](https://user-images.githubusercontent.com/6605776/210116184-9ca95dce-9989-46fa-ad81-94361dc99400.png)
 
 ## Building the environment (manually)
 
