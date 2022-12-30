@@ -5,6 +5,11 @@
 ## Api doc
 [Api documentation](https://documenter.getpostman.com/view/1954140/2s8Z6yYZHS)
 
+## Sequence diagram
+
+![image](https://user-images.githubusercontent.com/6605776/210117293-618adc93-f112-4d6f-bb22-dff6fa2f807d.png)
+
+
 ## Dependencies
 
 *   ``Docker`` 19.03.5+
@@ -98,41 +103,3 @@ or
 docker exec -it webapi php artisan test
 ```
 
-
-
-## To-do list
-
-## Improvements
-
-
-[x] Create sequence diagram
-[] Swagger
-[] Postman docs
-[] Unit tests
-[x] Logs
-[] Organize postman collection
-[x] Fix main branch
-[x] Run code lint
-[] Makefile
-[] Review readme
-
-
-## Features
-
-[x] External request->csv_data_api:send csv file
-[x] csv_data_api->Database:save csv file
-
-[x] Cron job->charge_api:Post request
-[x] charge_api->Database:Get csv_data
-[x] Database->charge_api:Return csv_data
-[x] charge_api->Database:Create charges 
-[x] charge_api->Database:Create charge payment data (boleto) for each charge
-
-[!] Cron job->charge_api:Trigger e-mail sending
-[x] Database<-charge_api:Get boleto list
-[x] Database->charge_api:Return boleto list
-[x] charge_api->Customers:Send e-mails containing boleto data to each customer
-
-[x] External request->charge_api:Send a payment webhook
-[x] charge_api->database:Save payment data (paid amount, paid by, and charge status)
-[x] charge_api->database:Update charge status
