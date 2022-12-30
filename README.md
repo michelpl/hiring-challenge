@@ -26,6 +26,12 @@ Enter in repository folder
 cd hiring-challenge
 ```
 
+Run de follwing command
+
+```bash
+make
+```
+
 Running services
 ```bash
 docker-compose up -d
@@ -74,7 +80,7 @@ $ chown -R www-data:$USER src
 [] Unit tests
 [x] Logs
 [] Organize postman collection
-[] Fix main branch
+[x] Fix main branch
 [x] Run code lint
 [] Makefile
 [] Review readme
