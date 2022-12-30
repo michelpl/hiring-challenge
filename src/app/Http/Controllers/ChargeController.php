@@ -36,9 +36,14 @@ class ChargeController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function list()
     {
-        return Charge::all();
+        try {
+            LogRepository::info('Get charge list..');
+            return $this->chargeService->paginatedChargeList(env('CHARGE_PAGINATION'));
+        } catch (Exception $e) {
+            return $this->handleExceptionResponse($e);
+        }
     }
     
     public function store(Request $request)

@@ -33,7 +33,12 @@ docker-compose up -d
 
 Running Laravel migrations
 ```bash
-docker-compose exec web php artisan migrate:fresh
+docker-compose exec webapi php artisan migrate
+```
+
+Running Scheculed Tasks Manually
+```bash
+docker-compose exec webapi php artisan schedule:run 
 ```
 
 ## The Hiring Challenge API will be avaliable on
@@ -83,7 +88,7 @@ $ chown -R www-data:$USER src
 [x] External request->csv_data_api:send csv file
 [x] csv_data_api->Database:save csv file
 
-[!] Cron job->charge_api:Post request
+[x] Cron job->charge_api:Post request
 [x] charge_api->Database:Get csv_data
 [x] Database->charge_api:Return csv_data
 [x] charge_api->Database:Create charges 

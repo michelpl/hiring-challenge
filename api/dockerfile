@@ -14,6 +14,9 @@ RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev liblda
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install mysqli
 
+#Cron
+RUN apt-get install -y cron
+
 ## GIT
 RUN apt-get install git -y
 
