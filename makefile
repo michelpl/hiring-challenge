@@ -8,3 +8,6 @@ run:
 
 test:
 	docker-compose exec webapi php artisan test
+
+showlogs:
+	echo "Showing logs...... \n " && tail -f src/storage/logs/laravel.log

@@ -102,3 +102,13 @@ or
 ```bash
 docker exec -it webapi php artisan test
 ```
+
+## Logs
+
+All logs will be created on src/storage/logs
+
+You can follow then executing the following command
+
+```bash
+make showlogs
+```
