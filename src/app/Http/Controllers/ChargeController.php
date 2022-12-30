@@ -22,7 +22,7 @@ class ChargeController extends Controller
             'email' => 'required|email',
             'debtAmount' => 'required|decimal:2|min:0.01|max:11',
             'debtDueDate' => 'required|date',
-            'debtId' => 'required|integer|min:1|max:99999999'
+            'debtId' => 'required|integer|min:1|max:9999999999999'
     ];
 
     public function __construct(
@@ -72,18 +72,14 @@ class ChargeController extends Controller
     private function handleExceptionResponse(Exception $e)
     {
         $message = $e->getMessage();
-        $code = $e->getCode();
+        $code = $e->getCode() != 0? $e->getCode(): Response::HTTP_UNPROCESSABLE_ENTITY;
 
         LogRepository::warning('Could not create charge:' . $e->getMessage());
 
         if (isset($e->validator)) {
             $validator = $e->validator;
-            $message = [
-                'Invalid request data',
-                $validator->messages()
-            ];
-
-            $code = 422;
+            $message = $validator->messages();
+            $code = 400;
         }
 
         return response($message, $code);

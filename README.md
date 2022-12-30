@@ -76,6 +76,7 @@ $ chown -R www-data:$USER src
 [] Run code lint
 [] Makefile
 [] Review readme
+[] Review exception handler
 
 ## Features
 

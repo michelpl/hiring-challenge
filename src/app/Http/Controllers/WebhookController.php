@@ -7,11 +7,12 @@ use App\Repositories\LogRepository;
 use App\Services\ChargeService;
 use Illuminate\Http\Request;
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
    
 class WebhookController extends Controller
 {
     private array $chargeValidationRules = [
-        'debtId' => 'required|integer|min:1|max:99999999',
+        'debtId' => 'required|integer|min:1|max:9999999999999',
         'paidAt' => 'required|date_format:Y-m-d H:i:s',
         'paidAmount' => 'required|decimal:2|min:1|max:19',
         'paidBy' => 'required|min:2|max:255|string',
@@ -31,7 +32,6 @@ class WebhookController extends Controller
     public function pay(Request $request){
         {
             try {
-                
                 $request->validate($this->chargeValidationRules);
 
                 $this->webhookRequest
@@ -41,8 +41,6 @@ class WebhookController extends Controller
                     ->setPaidBy($request->paidBy);
 
                 return $this->chargeService->payCharge($this->webhookRequest);
-    
-    
             } catch (Exception $e) {
                 return $this->handleExceptionResponse($e);
             }
@@ -52,20 +50,16 @@ class WebhookController extends Controller
     private function handleExceptionResponse(Exception $e)
     {
         $message = $e->getMessage();
-        $code = $e->getCode();
+        $code = $e->getCode() != 0? $e->getCode(): Response::HTTP_UNPROCESSABLE_ENTITY;
 
         LogRepository::warning('Could not pay the charge by webhook:' . $e->getMessage());
 
         if (isset($e->validator)) {
             $validator = $e->validator;
-            $message = [
-                'Invalid request data',
-                $validator->messages()
-            ];
-
-            $code = 422;
+            $message = $validator->messages();
+            $code = 400;
         }
 
-        return response($message, 400);
+        return response($message, $code);
     }
 }
