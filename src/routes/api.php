@@ -4,6 +4,7 @@ use App\Http\Controllers\BoletoController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\CsvDataController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,11 +28,13 @@ Route::group(['prefix' => 'V1'], function () {
     Route::controller(ChargeController::class)->group(function () {
         Route::get('/charges', 'list');
         Route::post('/charges', 'store');
-        Route::post('/charges/send', 'sendChargeToCustomers');
+        Route::post('/customerchargemails', 'sendChargeToCustomers');
     });
 
     Route::controller(CsvDataController::class)->group(function () {
         Route::post('/csvdata','store');
         Route::post('/charges/csv_data','createChargeFromCSVDatabase');
     });
+
+    Route::post('/webhook', [WebhookController::class, 'pay']);
 });

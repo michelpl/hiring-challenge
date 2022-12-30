@@ -88,11 +88,11 @@ $ chown -R www-data:$USER src
 [x] charge_api->Database:Create charges 
 [x] charge_api->Database:Create charge payment data (boleto) for each charge
 
-[] Cron job->charge_api:Trigger e-mail sending
-[] Database<-charge_api:Get boleto list
-[] Database->charge_api:Return boleto list
-[] charge_api->Customers:Send e-mails containing boleto data to each customer
+[!] Cron job->charge_api:Trigger e-mail sending
+[x] Database<-charge_api:Get boleto list
+[x] Database->charge_api:Return boleto list
+[x] charge_api->Customers:Send e-mails containing boleto data to each customer
 
-[] External request->charge_api:Send a payment webhook
-[] charge_api->database:Save payment data (paid amount, paid by, and charge status)
-[] charge_api->database:Update boleto status
+[x] External request->charge_api:Send a payment webhook
+[x] charge_api->database:Save payment data (paid amount, paid by, and charge status)
+[x] charge_api->database:Update charge status

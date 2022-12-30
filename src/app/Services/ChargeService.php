@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Factories\ChargeMailFactory;
+use App\Http\Requests\WebhookRequest;
 use App\Models\Charge;
 use App\Models\ChargeMail;
 use App\Repositories\LogRepository;
@@ -13,6 +14,9 @@ class ChargeService
 {
     const STATUS_CREATED = 'created';
     const STATUS_SENT = 'sent';
+    const STATUS_PAID = 'paid';
+    const STATUS_OVERPAID = 'overpaid';
+    const STATUS_UNDERPAID = 'underpaid';
     const CHARGES_TABLE = 'charges';
     private BoletoService $paymentService;
     private Charge $charge;
@@ -110,5 +114,45 @@ class ChargeService
                 $e->getMessage()
             );
         }
+    }
+
+    public function getChargeFromDebtId(int $debtId):Charge {
+        return Charge::where('debt_id', $debtId)->first();
+    }
+
+    public function payCharge(WebhookRequest $webhookRequest): string {
+        $charge = Charge::where('debt_id', $webhookRequest->getDebtId())->first();
+        $message = '';
+        
+        if ($charge->status == self::STATUS_PAID) {
+            LogRepository::info('Charge already paid. debtId: ' . $webhookRequest->getDebtId());
+            $message = 'Charge already paid';
+        }
+
+        $totalPaidAmount = $charge->paid_amount + $webhookRequest->getPaidAmount();
+
+        if($totalPaidAmount > $charge->debt_amount){
+            LogRepository::info('Charge overpaid. debtId: ' . $webhookRequest->getDebtId());
+            $charge->status = self::STATUS_OVERPAID;
+            $message = 'Charge overpaid. Total paid amount: ' . $totalPaidAmount;
+        }
+
+        if($totalPaidAmount < $charge->debt_amount){
+            LogRepository::info('Charge underpaid. debtId: ' . $webhookRequest->getDebtId());
+            $message = 'Charge underpaid. Total paid amount: ' . $totalPaidAmount;
+            $charge->status = self::STATUS_UNDERPAID;
+        }
+
+        if($totalPaidAmount == $charge->debt_amount) {
+            LogRepository::info('Charge paid. debtId: ' . $webhookRequest->getDebtId());
+            $charge->status = self::STATUS_PAID;
+        }
+
+        $charge->paid_amount = $totalPaidAmount;
+        $charge->paid_at = $webhookRequest->getPaidAt();
+        $charge->paid_by = $webhookRequest->getPaidBy();
+        $charge->save();
+
+        return $message;
     }
 }

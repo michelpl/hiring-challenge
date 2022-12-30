@@ -39,7 +39,6 @@ class ChargeController extends Controller
     public function index()
     {
         return Charge::all();
-        return [1,2];
     }
     
     public function store(Request $request)
