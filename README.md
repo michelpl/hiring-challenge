@@ -1,6 +1,6 @@
 # Hiring Challenge
 
-![Using](https://#.gif)
+
 
 ## Dependencies
 
@@ -31,6 +31,8 @@ Run de follwing command
 ```bash
 make
 ```
+
+![Using](https://imgur.com/FGTTwBT.gif)
 
 Running services
 ```bash
