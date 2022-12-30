@@ -1,5 +1,6 @@
 # Hiring Challenge
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
 
 ## Dependencies
 
@@ -70,7 +71,7 @@ http://localhost:8000/api/V1
 
 ## Consuming the API
 
-- Get postman collection
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
 
 ## Development environment
 
@@ -83,7 +84,7 @@ $ chown -R www-data:$USER src
 ```
 
 ## Api doc
-[API doc](https://#)
+[API doc]([https://#](https://documenter.getpostman.com/view/1954140/2s8Z6yYZHS))
 
 ## To-do list
 
