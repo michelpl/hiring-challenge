@@ -1,7 +1,6 @@
 # Hiring Challenge
 
 
-
 ## Dependencies
 
 *   ``Docker`` 19.03.5+
@@ -31,8 +30,23 @@ Run de follwing command
 ```bash
 make
 ```
+Expected output:
 
-![Using](https://imgur.com/FGTTwBT.gif)
+![image](https://user-images.githubusercontent.com/6605776/210115270-7a68bbc4-8eb4-40ad-93c2-23a779702886.png)
+
+## Building the environment (manually)
+
+Clone this repository
+
+```bash
+https://github.com/michelpl/hiring-challenge-docker.git
+```
+
+Enter in repository folder
+
+```bash
+cd hiring-challenge
+```
 
 Running services
 ```bash
