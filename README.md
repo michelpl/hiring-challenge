@@ -83,12 +83,18 @@ http://localhost:8000/api/V1
 
 ## Development environment
 
-In the project folder, run the following commands
+For changing project files in your machine, you need to run the following permissons
 
 ```bash
 $ find src/ -type d -exec chmod 775 {} \;
 $ find src/ -type f -exec chmod 664 {} \;
 $ chown -R www-data:$USER src
+```
+
+or 
+
+```bash
+make permissions
 ```
 
 ## Running tests
