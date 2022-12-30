@@ -2,6 +2,9 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
 
+## Api doc
+[Api documentation](https://documenter.getpostman.com/view/1954140/2s8Z6yYZHS)
+
 ## Dependencies
 
 *   ``Docker`` 19.03.5+
@@ -29,7 +32,7 @@ cd hiring-challenge
 Run de follwing command
 
 ```bash
-make
+make run
 ```
 Expected output:
 
@@ -59,7 +62,7 @@ Running Laravel migrations
 docker-compose exec webapi php artisan migrate
 ```
 
-Running Scheculed Tasks Manually
+Running Scheduled Tasks Manually
 ```bash
 docker-compose exec webapi php artisan schedule:run 
 ```
@@ -83,8 +86,19 @@ $ find src/ -type f -exec chmod 664 {} \;
 $ chown -R www-data:$USER src
 ```
 
-## Api doc
-[API doc]([https://#](https://documenter.getpostman.com/view/1954140/2s8Z6yYZHS))
+## Running tests
+
+```bash
+make test
+```
+
+or
+
+```bash
+docker exec -it webapi php artisan test
+```
+
+
 
 ## To-do list
 
