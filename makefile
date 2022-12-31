@@ -1,10 +1,17 @@
 # defines variables
 #include Make.config
 
+install:
+	cp src/.env.example src/.env
+	docker-compose up -d 
+	docker-compose exec webapi composer update -vvv
+	docker-compose exec webapi php artisan migrate:fresh
+
 run:
 	docker-compose up -d 
-	docker-compose exec webapi php artisan migrate
 
+stop:
+	docker-compose down
 
 test:
 	docker-compose exec webapi php artisan test

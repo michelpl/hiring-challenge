@@ -37,11 +37,8 @@ cd hiring-challenge
 Run de follwing command
 
 ```bash
-make run
+make install
 ```
-Expected output:
-
-![image](https://user-images.githubusercontent.com/6605776/210116184-9ca95dce-9989-46fa-ad81-94361dc99400.png)
 
 ## Building the environment (manually)
 
@@ -57,9 +54,22 @@ Enter in repository folder
 cd hiring-challenge
 ```
 
+Create the .env file
+
+Use .env.example as example
+
+```bash
+cp src/.env.example src/.env
+```
+
 Running services
 ```bash
 docker-compose up -d
+```
+Get the composer dependencies
+
+```bash
+docker-compose exec webapi composer update -vvv
 ```
 
 Running Laravel migrations
@@ -67,7 +77,7 @@ Running Laravel migrations
 docker-compose exec webapi php artisan migrate
 ```
 
-Running Scheduled Tasks Manually
+## Running Scheduled Tasks Manually
 ```bash
 docker-compose exec webapi php artisan schedule:run 
 ```
