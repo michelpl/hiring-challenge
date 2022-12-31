@@ -77,6 +77,18 @@ Running Laravel migrations
 docker-compose exec webapi php artisan migrate
 ```
 
+## Stoping services
+
+```bash
+make stop
+```
+
+or
+
+```bash
+docker-compose down
+```
+
 ## Running Scheduled Tasks Manually
 ```bash
 docker-compose exec webapi php artisan schedule:run 
