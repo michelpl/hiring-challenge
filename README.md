@@ -2,15 +2,15 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
 
-## Api doc
+## :memo: Api doc
 [Api documentation](https://documenter.getpostman.com/view/1954140/2s8Z6yYZHS)
 
-## Sequence diagram
+## 📈 Sequence diagram
 
 ![image](https://user-images.githubusercontent.com/6605776/210117293-618adc93-f112-4d6f-bb22-dff6fa2f807d.png)
 
 
-## Dependencies
+## ⬆️ Dependencies
 
 *   ``Docker`` 19.03.5+
 *   ``Docker Compose`` 1.23.1+
@@ -20,7 +20,7 @@
 *   ``Port 8000`` For Backend API
 *   ``Port 3306`` For database
 
-## Building the environment
+## 💚 Building the environment
 
 Clone this repository
 
@@ -40,7 +40,7 @@ Run de follwing command
 make install
 ```
 
-## Building the environment (manually)
+## 💚 Building the environment (manually)
 
 Clone this repository
 
@@ -77,7 +77,7 @@ Running Laravel migrations
 docker-compose exec webapi php artisan migrate
 ```
 
-## Stoping services
+## ⏪️ Stoping services
 
 ```bash
 make stop
@@ -89,7 +89,7 @@ or
 docker-compose down
 ```
 
-## Running Scheduled Tasks Manually
+## 🚀 Running Scheduled Tasks Manually
 ```bash
 docker-compose exec webapi php artisan schedule:run 
 ```
@@ -99,11 +99,11 @@ docker-compose exec webapi php artisan schedule:run
 http://localhost:8000/api/V1
 ```
 
-## Consuming the API
+## 🧑‍💻 Consuming the API
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d?action=collection%2Ffork&collection-url=entityId%3D1954140-6a0a051a-1bf6-4c19-9702-26058efaf04d%26entityType%3Dcollection%26workspaceId%3D884cf7ff-ca99-4231-944e-d47ac4babda5)
 
-## Development environment
+## 🧑‍💻 Development environment
 
 For changing project files in your machine, you need to run the following permissons
 
@@ -119,7 +119,7 @@ or
 make permissions
 ```
 
-## Running tests
+## ✅ Running tests
 
 ```bash
 make test
@@ -131,7 +131,7 @@ or
 docker exec -it webapi php artisan test
 ```
 
-## Logs
+## 🔊 Logs
 
 You can find all the api logs on ``src/storage/logs``
 
